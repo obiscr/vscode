@@ -123,6 +123,9 @@ import { IWebContentExtractorService } from '../../platform/webContentExtractor/
 import { NativeWebContentExtractorService } from '../../platform/webContentExtractor/electron-main/webContentExtractorService.js';
 import ErrorTelemetry from '../../platform/telemetry/electron-main/errorTelemetry.js';
 
+import { IMyFeatureService } from '../../platform/myFeature/common/myFeature.js';
+import { MyFeatureService } from '../../platform/myFeature/electron-main/myFeatureService.js';
+
 /**
  * The main VS Code application. There will only ever be one instance,
  * even if the user starts many instances (e.g. from the command line).
@@ -1111,6 +1114,10 @@ export class CodeApplication extends Disposable {
 
 		// Dev Only: CSS service (for ESM)
 		services.set(ICSSDevelopmentService, new SyncDescriptor(CSSDevelopmentService, undefined, true));
+
+		// My Feature
+		const myService = new MyFeatureService(this.logService);
+		services.set(IMyFeatureService, myService);
 
 		// Init services that require it
 		await Promises.settled([
